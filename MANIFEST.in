@@ -1,0 +1,4 @@
+include tpDcc/tools/scripteditor/__logging__.ini
+recursive-include tpDcc/tools/scripteditor/resources/* *.*
+include versioneer.py
+include tpDcc/tools/scripteditor/_version.py
