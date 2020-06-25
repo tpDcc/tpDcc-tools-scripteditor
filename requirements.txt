@@ -1,6 +1,7 @@
 # ===================================================================
 # tpDcc-tools-scripteditor requirements file
 # ===================================================================
+appdirs
 tpDcc-libs-python
 tpDcc-core
 tpDcc-libs-qt

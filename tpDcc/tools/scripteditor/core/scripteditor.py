@@ -52,10 +52,14 @@ class ScriptEditorWidget(toolset.ToolsetWidget, object):
     ID = TOOL_ID
 
     def __init__(self, *args, **kwargs):
+        self._settings = kwargs.pop('settings', None)
+
         super(ScriptEditorWidget, self).__init__(*args, **kwargs)
 
     def contents(self):
 
         from tpDcc.tools.scripteditor.widgets import scripteditor
 
-        return [scripteditor.ScriptEditorWidget()]
+        script_editor_widget = scripteditor.ScriptEditorWidget(settings=self._settings, parent=self)
+
+        return [script_editor_widget]
