@@ -1,8 +1,7 @@
 # ===================================================================
 # tpDcc-tools-scripteditor requirements file
 # ===================================================================
-appdirs
+jedi
 tpDcc-libs-python
 tpDcc-core
 tpDcc-libs-qt
-tpDcc-libs-nameit
