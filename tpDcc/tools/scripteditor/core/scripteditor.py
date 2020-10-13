@@ -63,3 +63,7 @@ class ScriptEditorWidget(toolset.ToolsetWidget, object):
         script_editor_widget = scripteditor.ScriptEditorWidget(settings=self._settings, parent=self)
 
         return [script_editor_widget]
+
+
+if __name__ == '__main__':
+    print('Hello World!')

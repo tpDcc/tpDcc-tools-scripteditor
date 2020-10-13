@@ -18,7 +18,7 @@ from Qt.QtWidgets import *
 from Qt.QtGui import *
 
 
-class OutputConsole(QTextBrowser, object):
+class OutputConsole(QTextEdit, object):
     def __init__(self, parent=None):
         super(OutputConsole, self).__init__(parent)
 
@@ -27,7 +27,7 @@ class OutputConsole(QTextBrowser, object):
         font.setStyleHint(QFont.Monospace)
         font.setFixedPitch(True)
         self.setFont(font)
-        self._font_size  = 14
+        self._font_size = 14
         self.document().setDefaultFont(QFont('Courier', self._font_size, QFont.Monospace))
         metrics = QFontMetrics(self.document().defaultFont())
         self.setTabStopWidth(4 * metrics.width(' '))
@@ -73,12 +73,14 @@ class OutputConsole(QTextBrowser, object):
         :param size: float
         """
 
-        self.setStyleSheet('''
-        QTextEdit
-        {
-            font-size: {}px
-        }
-        '''.format(size))
+        pass
+
+        # self.setStyleSheet('''
+        # QTextEdit
+        # {
+        #     font-size: {}px
+        # }
+        # '''.format(size))
 
     def change_font_size(self, up):
         """
