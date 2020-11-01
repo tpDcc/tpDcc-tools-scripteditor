@@ -14,20 +14,22 @@ __email__ = "tpovedatd@gmail.com"
 
 import os
 import sys
+import logging
 import traceback
 
-from Qt.QtCore import *
-from Qt.QtWidgets import *
-from Qt.QtGui import *
+from Qt.QtCore import Qt, Signal, QCoreApplication, QSize
+from Qt.QtWidgets import QSplitter, QFileDialog, QMenu, QAction, QToolBar, QMenuBar
+from Qt.QtGui import QKeySequence
 
-import tpDcc as tp
-from tpDcc.libs.python import osplatform, path as path_utils
-from tpDcc.libs.qt.core import base
-
+from tpDcc import dcc
+from tpDcc.managers import resources
 from tpDcc.tools.scripteditor.core import session, consts
+from tpDcc.libs.qt.core import base
+from tpDcc.libs.qt.widgets import buttons
+from tpDcc.libs.python import osplatform, path as path_utils
 from tpDcc.tools.scripteditor.widgets import console, script
 
-logger = tp.LogsMgr().get_logger('tpDcc-tools-scripteditor')
+logger = logging.getLogger('tpDcc-tools-scripteditor')
 
 
 class ScriptEditorWidget(base.BaseWidget, object):
@@ -50,7 +52,7 @@ class ScriptEditorWidget(base.BaseWidget, object):
         self._update_namespace({
             'self_main': self,
             'self_output': self._output_console,
-            'self._context': tp.Dcc.get_name()
+            'self._context': dcc.get_name()
         })
 
         self._load_current_session()
@@ -264,7 +266,7 @@ class ScriptEditorWidget(base.BaseWidget, object):
                 name = self._scripts_tab.tabText(item)
                 text = self._scripts_tab.get_tab_text(item)
                 file_path = self._scripts_tab.get_current_file(item)
-                if tp.is_houdini():
+                if dcc.is_houdini():
                     size = self._scripts_tab.widget(item).editor.font_size
                 else:
                     size = self._scripts_tab.widget(item).editor.font().pointSize()
@@ -295,26 +297,26 @@ class ScriptEditorWidget(base.BaseWidget, object):
 
         menubar = QMenuBar(self)
 
-        save_archive_icon = tp.ResourcesMgr().icon('save_archive')
-        save_icon = tp.ResourcesMgr().icon('save')
-        load_icon = tp.ResourcesMgr().icon('open_folder')
-        play_icon = tp.ResourcesMgr().icon('play')
-        clear_icon = tp.ResourcesMgr().icon('delete')
-        resume_icon = tp.ResourcesMgr().icon('resume')
-        undo_icon = tp.ResourcesMgr().icon('undo')
-        redo_icon = tp.ResourcesMgr().icon('redo')
-        copy_icon = tp.ResourcesMgr().icon('copy')
-        cut_icon = tp.ResourcesMgr().icon('cut')
-        paste_icon = tp.ResourcesMgr().icon('paste')
-        note_icon = tp.ResourcesMgr().icon('note')
-        rename_icon = tp.ResourcesMgr().icon('rename')
-        theme_icon = tp.ResourcesMgr().icon('palette')
-        edit_icon = tp.ResourcesMgr().icon('edit')
-        settings_icon = tp.ResourcesMgr().icon('settings')
-        manual_icon = tp.ResourcesMgr().icon('manual')
-        keyboard_icon = tp.ResourcesMgr().icon('keyboard')
-        help_icon = tp.ResourcesMgr().icon('help')
-        about_icon = tp.ResourcesMgr().icon('about')
+        save_archive_icon = resources.icon('save_archive')
+        save_icon = resources.icon('save')
+        load_icon = resources.icon('open_folder')
+        play_icon = resources.icon('play')
+        clear_icon = resources.icon('delete')
+        resume_icon = resources.icon('resume')
+        undo_icon = resources.icon('undo')
+        redo_icon = resources.icon('redo')
+        copy_icon = resources.icon('copy')
+        cut_icon = resources.icon('cut')
+        paste_icon = resources.icon('paste')
+        note_icon = resources.icon('note')
+        rename_icon = resources.icon('rename')
+        theme_icon = resources.icon('palette')
+        edit_icon = resources.icon('edit')
+        settings_icon = resources.icon('settings')
+        manual_icon = resources.icon('manual')
+        keyboard_icon = resources.icon('keyboard')
+        help_icon = resources.icon('help')
+        about_icon = resources.icon('about')
 
         file_menu = QMenu('File', self)
         menubar.addMenu(file_menu)
@@ -428,11 +430,11 @@ class ScriptEditorWidget(base.BaseWidget, object):
         toolbar = QToolBar('Script Editor ToolBar')
         toolbar.setIconSize(QSize(16, 16))
 
-        execute_btn = QToolButton()
+        execute_btn = buttons.BaseToolButton(parent=self)
         execute_btn.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
-        execute_selected_btn = QToolButton()
+        execute_selected_btn = buttons.BaseToolButton(parent=self)
         execute_selected_btn.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
-        clear_output_btn = QToolButton()
+        clear_output_btn = buttons.BaseToolButton(parent=self)
         clear_output_btn.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
 
         toolbar.addWidget(execute_btn)

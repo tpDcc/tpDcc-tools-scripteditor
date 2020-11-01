@@ -13,8 +13,8 @@ __license__ = "MIT"
 __maintainer__ = "Tomas Poveda"
 __email__ = "tpovedatd@gmail.com"
 
-from Qt.QtCore import *
-from Qt.QtGui import *
+from Qt.QtCore import Qt
+from Qt.QtGui import QFont
 
 
 DEFAULT_SESSION_NAME = 'session.json'

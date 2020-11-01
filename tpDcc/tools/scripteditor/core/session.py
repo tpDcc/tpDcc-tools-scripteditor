@@ -57,10 +57,10 @@ class Session(object):
         return self._path
 
 
-@decorators.Singleton
+@decorators.add_metaclass(decorators.Singleton)
 class SessionManager(object):
     def __init__(self):
-        SessionManager.__init__(self)
+        super(SessionManager, self).__init__()
 
         self._current_session = None
 

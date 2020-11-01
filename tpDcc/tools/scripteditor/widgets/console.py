@@ -13,9 +13,9 @@ __license__ = "MIT"
 __maintainer__ = "Tomas Poveda"
 __email__ = "tpovedatd@gmail.com"
 
-from Qt.QtCore import *
-from Qt.QtWidgets import *
-from Qt.QtGui import *
+from Qt.QtCore import Qt
+from Qt.QtWidgets import QTextEdit, QTextBrowser
+from Qt.QtGui import QFont, QFontMetrics, QTextOption, QTextCursor
 
 
 class OutputConsole(QTextEdit, object):

@@ -15,22 +15,25 @@ __email__ = "tpovedatd@gmail.com"
 import os
 import re
 import jedi
+import logging
 import traceback
 
-from Qt.QtCore import *
-from Qt.QtWidgets import *
-from Qt.QtGui import *
+from Qt.QtCore import Qt, Signal, QPoint, QRect
+from Qt.QtWidgets import QApplication, QWidget, QMessageBox, QMenu, QTextEdit, QShortcut, QAction
+from Qt.QtGui import QCursor, QTextCursor, QTextOption, QFont, QFontMetrics, QKeySequence, QColor, QPalette
+from Qt.QtGui import QPen, QBrush, QPainter
 
-import tpDcc as tp
+from tpDcc import dcc
+from tpDcc.dcc import completer
 from tpDcc.libs.python import path as path_utils
 from tpDcc.libs.qt.core import base, qtutils
-from tpDcc.libs.qt.widgets import tabs
+from tpDcc.libs.qt.widgets import layouts, tabs
 
 from tpDcc.tools.scripteditor.core import consts
 from tpDcc.tools.scripteditor.widgets import completer
 from tpDcc.tools.scripteditor.syntax import python
 
-logger = tp.LogsMgr().get_logger('tpDcc-tools-scripteditor')
+logger = logging.getLogger('tpDcc-tools-scripteditor')
 
 
 class ScriptsTab(tabs.BaseEditableTabWidget, object):
@@ -371,9 +374,7 @@ class ScriptWidget(base.BaseWidget, object):
         return self._editor
 
     def get_main_layout(self):
-        main_layout = QHBoxLayout()
-        main_layout.setContentsMargins(0, 0, 0, 0)
-        main_layout.setSpacing(0)
+        main_layout = layouts.HorizontalLayout(spacing=0, margins=(0, 0, 0, 0))
 
         return main_layout
 
@@ -564,7 +565,7 @@ class ScriptEditor(QTextEdit, object):
             mime_data = event.mimeData()
             text = mime_data.text()
             namespace = self._parent.namespace
-            text = tp.Completer.wrap_dropped_text(namespace, text, event)
+            text = completer.Completer.wrap_dropped_text(namespace, text, event)
             mime_data.setText(text)
             super(ScriptEditor, self).dropEvent(event)
         else:
@@ -650,7 +651,7 @@ class ScriptEditor(QTextEdit, object):
         :param up: float
         """
 
-        if tp.is_houdini():
+        if dcc.is_houdini():
             if up:
                 self._font_size = min(30, self._font_size + 1)
             else:
@@ -681,7 +682,7 @@ class ScriptEditor(QTextEdit, object):
         """
 
         if font_size > consts.MIN_FONT_SIZE:
-            if tp.is_houdini():
+            if dcc.is_houdini():
                 self._font_size = font_size
                 self._set_text_editor_font_size(self.font_size)
             else:
@@ -923,7 +924,7 @@ class ScriptEditor(QTextEdit, object):
                 if not context_completer:
                     if re.match('[a-zA-Z0-9_.]', text[pos - 1]):
                         offset = 0
-                        auto_import = tp.Completer.get_auto_import()
+                        auto_import = completer.Completer.get_auto_import()
                         if auto_import:
                             text = auto_import + text
                             offset = len(auto_import.split('\n')) - 1

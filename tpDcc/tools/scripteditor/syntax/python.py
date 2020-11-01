@@ -15,8 +15,8 @@ __email__ = "tpovedatd@gmail.com"
 import os
 import re
 
-from Qt.QtCore import *
-from Qt.QtGui import *
+from Qt.QtCore import QRegExp
+from Qt.QtGui import QFont, QColor, QBrush, QTextCharFormat, QSyntaxHighlighter
 
 EditorStyle = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'resources', 'styles', 'completer.css')
 if not os.path.exists(EditorStyle):

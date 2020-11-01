@@ -14,13 +14,12 @@ __email__ = "tpovedatd@gmail.com"
 
 import re
 
-from Qt.QtCore import *
-from Qt.QtWidgets import *
-from Qt.QtGui import *
+from Qt.QtCore import Qt
+from Qt.QtWidgets import QListWidget, QListWidgetItem
+from Qt.QtGui import QFont, QFontMetrics
 
-import tpDcc as tp
+from tpDcc import dcc
 from tpDcc.libs.python import osplatform
-
 from tpDcc.tools.scripteditor.syntax import python
 
 NODE_TYPES_CACHE = list()
@@ -37,7 +36,7 @@ class ScriptCompleter(QListWidget, object):
     def __init__(self, parent=None, editor=None):
         super(ScriptCompleter, self).__init__(parent)
 
-        if tp.is_maya():
+        if dcc.is_maya():
             import pymel.core as pm
             global NODE_TYPES_CACHE
             NODE_TYPES_CACHE = pm.allNodeTypes()
@@ -165,7 +164,7 @@ def completer(line, ns):
     m = re.search(p, line)
     if m:
         name = m.group(1)
-        exists_nodes = sorted(tp.Dcc.selected_nodes(full_path=False))
+        exists_nodes = sorted(dcc.selected_nodes(full_path=False))
         l = len(name)
         if name:
             auto = [x for x in exists_nodes if x.lower().startswith(name.lower())]
